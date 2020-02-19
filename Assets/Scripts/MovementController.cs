@@ -16,15 +16,19 @@ public class MovementController : MonoBehaviour
         anim = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
     }
-    // Start is called before the first frame update
-    void Start()
+    private void FixedUpdate()
     {
-        
+        bool forwards = Input.GetButton("Forwards");
+        bool backwards = Input.GetButton("Backwards");
+        bool left = Input.GetButton("Left");
+        bool right = Input.GetButton("Right");
+        MovementManager(forwards, backwards, left, right);
     }
-
-    // Update is called once per frame
-    void Update()
+    private void MovementManager(bool forwards, bool backwards, bool left, bool right)
     {
-        
+        anim.SetBool(Animator.StringToHash("WalkForward"), forwards);
+        ///anim.SetBool(Animator.StringToHash("WalkBackwards"), backwards);
+        anim.SetBool(Animator.StringToHash("TurnLeft"), left);
+        anim.SetBool(Animator.StringToHash("TurnRight"), right);
     }
 }
