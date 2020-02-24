@@ -16,13 +16,22 @@ public class MovementController : MonoBehaviour
         anim = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
     }
-    private void FixedUpdate()
+    private void Update()
     {
-        bool forwards = Input.GetButton("Forwards");
-        bool backwards = Input.GetButton("Backwards");
-        bool left = Input.GetButton("Left");
-        bool right = Input.GetButton("Right");
-        MovementManager(forwards, backwards, left, right);
+        anim.SetBool("WalkForward", Input.GetButton("Forwards"));
+
+        anim.SetBool("TurnLeft", Input.GetButton("Left"));
+
+        anim.SetBool("TurnRight", Input.GetButton("Right"));
+
+        anim.SetBool("WalkBackwards", Input.GetButton("Backwards"));
+
+
+        //bool forwards = Input.GetButton("Forwards");
+        //bool backwards = Input.GetButton("Backwards");
+        //bool left = Input.GetButton("Left");
+        //bool right = Input.GetButton("Right");
+        //MovementManager(forwards, backwards, left, right);
     }
     private void MovementManager(bool forwards, bool backwards, bool left, bool right)
     {
