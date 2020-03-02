@@ -9,7 +9,7 @@ public class MovementController : MonoBehaviour
 
     private Animator anim;
     private new Rigidbody rigidbody;
-
+    public float speed = 1;
 
     private void Awake()
     {
@@ -25,13 +25,6 @@ public class MovementController : MonoBehaviour
         anim.SetBool("TurnRight", Input.GetButton("Right"));
 
         anim.SetBool("WalkBackwards", Input.GetButton("Backwards"));
-
-
-        //bool forwards = Input.GetButton("Forwards");
-        //bool backwards = Input.GetButton("Backwards");
-        //bool left = Input.GetButton("Left");
-        //bool right = Input.GetButton("Right");
-        //MovementManager(forwards, backwards, left, right);
     }
     private void MovementManager(bool forwards, bool backwards, bool left, bool right)
     {
@@ -39,5 +32,14 @@ public class MovementController : MonoBehaviour
         ///anim.SetBool(Animator.StringToHash("WalkBackwards"), backwards);
         anim.SetBool(Animator.StringToHash("TurnLeft"), left);
         anim.SetBool(Animator.StringToHash("TurnRight"), right);
+    }
+    private void FixedUpdate()
+    {
+        if (Input.GetButton("Backwards"))
+        {
+            Vector3 moveBack = new Vector3(0, 0, -0.015f);
+            moveBack = rigidbody.transform.TransformDirection(moveBack);
+            rigidbody.transform.position += moveBack;
+        }
     }
 }
