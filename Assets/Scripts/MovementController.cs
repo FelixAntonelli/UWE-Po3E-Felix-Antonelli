@@ -25,6 +25,8 @@ public class MovementController : MonoBehaviour
         anim.SetBool("TurnRight", Input.GetButton("Right"));
 
         anim.SetBool("WalkBackwards", Input.GetButton("Backwards"));
+
+        anim.SetBool("Run", Input.GetButton("Run"));
     }
     private void MovementManager(bool forwards, bool backwards, bool left, bool right)
     {
@@ -40,6 +42,12 @@ public class MovementController : MonoBehaviour
             Vector3 moveBack = new Vector3(0, 0, -0.015f);
             moveBack = rigidbody.transform.TransformDirection(moveBack);
             rigidbody.transform.position += moveBack;
+        }
+        if (Input.GetButton("Run") && Input.GetButton("Forwards"))
+        {
+            Vector3 moveRun = new Vector3(0,0,0.2f);
+            moveRun = rigidbody.transform.TransformDirection(moveRun);
+            rigidbody.transform.position += moveRun;
         }
     }
 }
