@@ -45,7 +45,7 @@ public class MovementController : MonoBehaviour
         }
         if (Input.GetButton("Run") && Input.GetButton("Forwards"))
         {
-            Vector3 moveRun = new Vector3(0,0,0.2f);
+            Vector3 moveRun = new Vector3(0,0,0.1f);
             moveRun = rigidbody.transform.TransformDirection(moveRun);
             rigidbody.transform.position += moveRun;
         }

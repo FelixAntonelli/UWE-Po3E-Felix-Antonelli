@@ -4,26 +4,19 @@ using UnityEngine;
 
 public class CameraTrigger : MonoBehaviour
 {
-    public Camera triggeredCam;
     public Camera liveCam;
-    public float x;
-    public float y = 2;
-    public float z = 5;
+    public Transform new_pos;
+    private bool trigger = false;
+    private bool trigger_exit = false;
     private GameObject PlayerCharacter;
     private Collider PlayerCollider;
-    private float start_x;
-    private float start_y;
-    private float start_z;
     private float lerp_timer;
     public float smooth;
     private Vector3 cam_pos;
-   private float move_x;
-    private float move_y;
-    private float move_z;
+    private Vector3 start_pos;
 
     private void Awake()
     {
-        liveCam = Camera.allCameras[0];
         PlayerCharacter = GameObject.FindGameObjectWithTag("Player");
         PlayerCollider = PlayerCharacter.GetComponent<Collider>();
     }
@@ -31,35 +24,44 @@ public class CameraTrigger : MonoBehaviour
     {
         if (other == PlayerCollider)
         {
-            /// Vector3 moveCam = new Vector3(liveCam.transform.localPosition.x, liveCam.transform.localPosition.y + y, liveCam.transform.localPosition.z - z);
-            /// moveCam = liveCam.transform.TransformDirection(moveCam);
-            ///liveCam.transform.localPosition = moveCam;
-            start_x = liveCam.transform.localPosition.x;
-            start_y = liveCam.transform.localPosition.y;
-            start_z = liveCam.transform.localPosition.z;
-            move_x *= Time.deltaTime;
-            move_y *= Time.deltaTime;
-            move_z *= Time.deltaTime;
+            start_pos = liveCam.transform.localPosition;
+            trigger = true;
+            lerp_timer = 0;
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other == PlayerCollider)
         {
-            ///Vector3 moveCam = new Vector3(liveCam.transform.localPosition.x, liveCam.transform.localPosition.y - y, liveCam.transform.localPosition.z + z);
-           /// liveCam.transform.localPosition = moveCam;
+            trigger = false;
+            trigger_exit = true;
+            lerp_timer = 0;
         }
     }
-    private void Update()
+    private void FixedUpdate()
     {
         zoom();
     }
     private void zoom()
     {
-        lerp_timer = Time.deltaTime * smooth;
-        cam_pos.x = Mathf.Lerp(liveCam.transform.localPosition.x, liveCam.transform.localPosition.x - move_x, lerp_timer);
-        cam_pos.y = Mathf.Lerp(liveCam.transform.localPosition.y, liveCam.transform.localPosition.y + move_y, lerp_timer);
-        cam_pos.z = Mathf.Lerp(liveCam.transform.localPosition.z, liveCam.transform.localPosition.z - move_z, lerp_timer);
-        liveCam.transform.localPosition = cam_pos;
+        if (trigger)
+        {
+            //Vector3 player_chest = PlayerCharacter.transform.position;
+            //player_chest.y = player_chest.y + 2;
+            lerp_timer += Time.deltaTime * smooth;
+            cam_pos = Vector3.Lerp(start_pos, new_pos.localPosition, lerp_timer);
+            //liveCam.transform.LookAt(player_chest);
+            liveCam.transform.localPosition = cam_pos;
+        }
+        else if (trigger_exit)
+        {
+            //Vector3 player_chest = PlayerCharacter.transform.position;
+            //player_chest.y = player_chest.y + 2;
+            lerp_timer += Time.deltaTime * (smooth * 2);
+            cam_pos = Vector3.Lerp(new_pos.localPosition, start_pos, lerp_timer);
+            //liveCam.transform.LookAt(player_chest);
+            liveCam.transform.localPosition = cam_pos;
+        }
+        
     }
 }
