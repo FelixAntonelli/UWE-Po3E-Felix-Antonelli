@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class RayCastHideObject : MonoBehaviour
@@ -7,69 +6,48 @@ public class RayCastHideObject : MonoBehaviour
     private Ray ray;
     public Transform camera_transform;
     public Transform player_transform;
-    private List<Renderer> renderers = new List<Renderer>();
+    public Transform camera_start_transform;
     public LayerMask layerMask = Physics.AllLayers;
-    private RaycastHit[] previousHits;
+    public float sphereCastSize = 1;
+    private float distance;
+    public float FOVstart = 60;
+    public float FOVend = 120;
+    public Camera mainCam;
     //TODO: create ray
     // update ray
     //raycast
     // Start is called before the first frame update
     void Start()
     {
-        
+        setupRay();
+    }
+
+    private void OnDrawGizmos()
+    {
+        setupRay();
+        Gizmos.DrawWireSphere(camera_transform.position, sphereCastSize);
+        Gizmos.DrawRay(ray);
+    }
+    private void setupRay()
+    {
+        ray.origin = (player_transform.position + new Vector3(0, 0.8f, 0));
+        ray.direction = camera_transform.position - (player_transform.position + new Vector3(0, 0.8f, 0));
+        distance = Vector3.Distance(camera_start_transform.position, player_transform.position + new Vector3(0, 0.8f, 0));
     }
 
     // Update is called once per frame
     void Update()
     {
-        ray.origin = camera_transform.position;
-        ray.direction = player_transform.position - camera_transform.position;
-
-        RaycastHit[] hits;
-        hits = Physics.SphereCastAll(ray, 1, Vector3.Distance(player_transform.position, camera_transform.position), layerMask);
-        bool already_exist = false;
-        foreach (var prevHit in previousHits)
+        setupRay();
+        if (Physics.SphereCast(ray, sphereCastSize, out RaycastHit hit, distance))
         {
-            var prevRenderer = prevHit.collider.GetComponent<Renderer>();
-            var renderer = new Renderer();
-            if (prevRenderer == null)
-            {
-                continue;
-            }
-            foreach (var hit in hits)
-            {
-                renderer = hit.collider.GetComponent<Renderer>();
-                if (renderer == null)
-                {
-                    continue;
-                }
-                if (prevRenderer == renderer)
-                {
-                    already_exist = true;
-                }
-            }
-            if (!already_exist)
-            {
-                renderer.enabled = false;
-
-            }
+            camera_transform.localPosition = new Vector3(0, 0, distance - hit.distance);
+            mainCam.fieldOfView = Mathf.Lerp(FOVstart, FOVend, distance - hit.distance);
         }
-
-        foreach (var hit in hits)
+        else
         {
-            var renderer = hit.collider.GetComponent<Renderer>();
-            if (renderer == null)
-            {
-                continue;
-            }
-            if (renderers.Contains(renderer))
-            {
-                continue;
-            }
-            renderer.enabled = false;
-            renderers.Add(renderer);
+            camera_transform.position = camera_start_transform.position;
         }
-        previousHits = hits;
-        
+      
     }
 }
