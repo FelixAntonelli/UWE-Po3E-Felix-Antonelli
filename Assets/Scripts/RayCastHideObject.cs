@@ -7,12 +7,16 @@ public class RayCastHideObject : MonoBehaviour
     public Transform camera_transform;
     public Transform player_transform;
     public Transform camera_start_transform;
+    public Transform POV_transform;
     public LayerMask layerMask = Physics.AllLayers;
     public float sphereCastSize = 1;
     private float distance;
     public float FOVstart = 60;
     public float FOVend = 120;
     public Camera mainCam;
+    private float lerpTimer;
+    private float FOVlerpTimer;
+    public float smooth;
     //TODO: create ray
     // update ray
     //raycast
@@ -20,6 +24,22 @@ public class RayCastHideObject : MonoBehaviour
     void Start()
     {
         setupRay();
+    }
+
+    void moveByLerp(Vector3 cameraCurrent, Vector3 new_pos)
+    {
+        lerpTimer += Time.deltaTime * smooth;
+        camera_transform.localPosition = Vector3.Lerp(cameraCurrent, new_pos, lerpTimer);
+        
+        if (cameraCurrent == new_pos)
+        {
+            lerpTimer = 0;
+        }
+    }
+    void FOVbyLerp()
+    {
+        FOVlerpTimer += Time.deltaTime * smooth;
+        mainCam.fieldOfView = Mathf.Lerp(FOVstart, FOVend, FOVlerpTimer);
     }
 
     private void OnDrawGizmos()
@@ -41,8 +61,7 @@ public class RayCastHideObject : MonoBehaviour
         setupRay();
         if (Physics.SphereCast(ray, sphereCastSize, out RaycastHit hit, distance))
         {
-            camera_transform.localPosition = new Vector3(0, 0, distance - hit.distance);
-            mainCam.fieldOfView = Mathf.Lerp(FOVstart, FOVend, distance - hit.distance);
+                moveByLerp(camera_transform.localPosition, new Vector3(0, 0, distance - hit.distance));
         }
         else
         {
