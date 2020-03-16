@@ -9,12 +9,16 @@ public class PutDownKey : MonoBehaviour
     public Transform leverTransform;
     public Transform slotTransform;
     public Transform playerTransform;
+    private Animator animator;
+    private GameObject enviro;
 
     // Start is called before the first frame update
     private void Awake()
     {
         PlayerCharacter = GameObject.FindGameObjectWithTag("Player");
         PlayerCollider = PlayerCharacter.GetComponent<Collider>();
+        enviro = GameObject.FindGameObjectWithTag("Enviroment");
+        animator = enviro.GetComponent<Animator>();
     }
     private void OnTriggerStay(Collider other)
     {
@@ -26,6 +30,7 @@ public class PutDownKey : MonoBehaviour
                 {
                     leverTransform.parent = slotTransform;
                     leverTransform.localPosition = new Vector3(0, 0.0f, -0.5f);
+                    animator.Play("basketAnim", 0);
                 }
             }
         }
