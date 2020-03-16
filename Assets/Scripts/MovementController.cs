@@ -43,7 +43,7 @@ public class MovementController : MonoBehaviour
             moveBack = rigidbody.transform.TransformDirection(moveBack);
             rigidbody.transform.position += moveBack;
         }
-        if (Input.GetButton("Run") && Input.GetButton("Forwards"))
+        if (Input.GetButton("Run") && !Input.GetButton("Left") && !Input.GetButton("Right"))
         {
             Vector3 moveRun = new Vector3(0,0,0.1f);
             moveRun = rigidbody.transform.TransformDirection(moveRun);
