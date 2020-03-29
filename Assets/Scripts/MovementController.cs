@@ -27,6 +27,8 @@ public class MovementController : MonoBehaviour
         anim.SetBool("WalkBackwards", Input.GetButton("Backwards"));
 
         anim.SetBool("Run", Input.GetButton("Run"));
+
+        anim.SetBool("Jump", Input.GetButton("Jump"));
     }
     private void MovementManager(bool forwards, bool backwards, bool left, bool right)
     {

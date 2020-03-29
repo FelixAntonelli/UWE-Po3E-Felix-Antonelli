@@ -29,8 +29,10 @@ public class PutDownKey : MonoBehaviour
                 if (leverTransform.parent == playerTransform)
                 {
                     leverTransform.parent = slotTransform;
-                    leverTransform.localPosition = new Vector3(0, 0.0f, -0.5f);
-                    animator.Play("basketAnim", 0);
+                    leverTransform.localPosition = new Vector3(0,0,0);
+                    leverTransform.localRotation = new Quaternion(0,0,0,0);
+                    leverTransform.localScale = new Vector3(0.2f,0.2f,0.2f);
+                    animator.SetBool("readyAnim", true);
                 }
             }
         }
