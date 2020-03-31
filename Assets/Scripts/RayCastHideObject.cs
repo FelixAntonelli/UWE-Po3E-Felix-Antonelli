@@ -14,6 +14,7 @@ public class RayCastHideObject : MonoBehaviour
     public Camera mainCam;
     private float lerpTimer;
     public float smooth;
+    private bool stop = false;
     //TODO: create ray
     // update ray
     //raycast
@@ -49,19 +50,25 @@ public class RayCastHideObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mainCam.transform.localScale = new Vector3(0,1,1);
-        setupRay();
-        if (Physics.SphereCast(ray, sphereCastSize, out RaycastHit hit, distance))
+        if (!stop)
         {
-            if (!(hit.collider.tag == "IgnoreRayCast"))
+            setupRay();
+            if (Physics.SphereCast(ray, sphereCastSize, out RaycastHit hit, distance))
             {
-                moveByLerp(camera_transform.localPosition, new Vector3(0, 0, distance - hit.distance));
+                if (!(hit.collider.tag == "IgnoreRayCast"))
+                {
+                    moveByLerp(camera_transform.localPosition, new Vector3(0, 0, distance - hit.distance));
+                }
+            }
+            else
+            {
+                camera_transform.position = camera_start_transform.position;
             }
         }
-        else
-        {
-            camera_transform.position = camera_start_transform.position;
-        }
       
+    }
+    public void stopScript()
+    {
+        stop = true;
     }
 }
