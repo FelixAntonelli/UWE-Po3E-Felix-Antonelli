@@ -26,7 +26,7 @@ public class GetOutOfBasket : MonoBehaviour
             if (Input.GetButton("Interact"))
             {
                 playerTransform.parent = null;
-                playerTransform.position = new Vector3(playerTransform.position.x, playerTransform.position.y, playerTransform.position.z - 5);
+                playerTransform.position = new Vector3(playerTransform.position.x, playerTransform.position.y, playerTransform.position.z - 0.5f);
             }
         }
     }

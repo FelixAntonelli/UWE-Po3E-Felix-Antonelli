@@ -9,6 +9,7 @@ public class MoveGun : MonoBehaviour
     public Transform mainCam;
     public Transform camNewPos;
     public Transform EndOfBarrelTransform;
+    public SkinnedMeshRenderer meshRenderer;
     public float smooth = 2f;
 
     private GameObject PlayerCharacter;
@@ -25,7 +26,6 @@ public class MoveGun : MonoBehaviour
     {
         PlayerCharacter = GameObject.FindGameObjectWithTag("Player");
         PlayerCollider = PlayerCharacter.GetComponent<Collider>();
-        
     }
     private void OnTriggerStay(Collider other)
     {
@@ -101,6 +101,7 @@ public class MoveGun : MonoBehaviour
         if (on_gun)
         {
             mainCam.transform.LookAt(EndOfBarrelTransform);
+            meshRenderer.enabled = false;
         }
     }
 }
