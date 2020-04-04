@@ -23,6 +23,9 @@ public class MoveGun : MonoBehaviour
     private Vector3 intialPos;
     private Quaternion intialRotate;
     private float particleSpeed;
+    private float particleDist;
+    private float particleBrightness = 3;
+    
 
     private void Awake()
     {
@@ -30,6 +33,7 @@ public class MoveGun : MonoBehaviour
         PlayerCollider = PlayerCharacter.GetComponent<Collider>();
         particles.enableEmission = false;
         particleSpeed = particles.main.simulationSpeed;
+        particleDist = particles.velocityOverLifetime.x.constant;
     }
     private void OnTriggerStay(Collider other)
     {
@@ -109,10 +113,44 @@ public class MoveGun : MonoBehaviour
         {
             mainCam.transform.LookAt(EndOfBarrelTransform);
             meshRenderer.enabled = false;
+            ParticleSystem.MainModule psMain = particles.main;
+            ParticleSystem.VelocityOverLifetimeModule psVelocity = particles.velocityOverLifetime;
+            ParticleSystem.Particle[] p = new ParticleSystem.Particle[particles.particleCount + 1];
+            ParticleSystem.LightsModule psLight = particles.lights;
+            particles.enableEmission = true;
             if (Input.GetButton("Fire"))
             {
-                particles.enableEmission = true;
+                particleDist -= 10 * Time.deltaTime;
+                particleSpeed += 0.5f * Time.deltaTime;
+                particleBrightness += 1 * Time.deltaTime;
+                if (particleSpeed > 1)
+                {
+                    particleSpeed = 1;
+                }
+                if (particleBrightness > 8)
+                {
+                    particleBrightness = 8;
+                }
             }
+            else
+            {
+                particleDist = -5;
+                particleSpeed = 0.1f;
+                particleBrightness = 3; 
+            }
+
+            int l = particles.GetParticles(p);
+
+            int i = 0;
+            while (i < l)
+            {
+                p[i].velocity = new Vector3(particleDist, 0, 0);
+                i++;
+            }
+            particles.SetParticles(p, l);
+            psMain.simulationSpeed = particleSpeed;
+            psLight.intensityMultiplier = particleBrightness;
+            psLight.rangeMultiplier = particleBrightness;
         }
     }
 }
