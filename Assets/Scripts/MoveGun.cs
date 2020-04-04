@@ -11,6 +11,7 @@ public class MoveGun : MonoBehaviour
     public Transform EndOfBarrelTransform;
     public SkinnedMeshRenderer meshRenderer;
     public float smooth = 2f;
+    public ParticleSystem particles;
 
     private GameObject PlayerCharacter;
     private Collider PlayerCollider;
@@ -21,11 +22,14 @@ public class MoveGun : MonoBehaviour
     private bool start_lerp = false;
     private Vector3 intialPos;
     private Quaternion intialRotate;
+    private float particleSpeed;
 
     private void Awake()
     {
         PlayerCharacter = GameObject.FindGameObjectWithTag("Player");
         PlayerCollider = PlayerCharacter.GetComponent<Collider>();
+        particles.enableEmission = false;
+        particleSpeed = particles.main.simulationSpeed;
     }
     private void OnTriggerStay(Collider other)
     {
@@ -89,6 +93,9 @@ public class MoveGun : MonoBehaviour
             GunTransform.localRotation = new Quaternion(GunTransform.localRotation.x , GunTransform.localRotation.y + 0.005f, GunTransform.localRotation.z, GunTransform.localRotation.w);
         }
         ///maybe limit left/right rotate
+        
+
+
     }
 
     // Update is called once per frame
@@ -102,6 +109,10 @@ public class MoveGun : MonoBehaviour
         {
             mainCam.transform.LookAt(EndOfBarrelTransform);
             meshRenderer.enabled = false;
+            if (Input.GetButton("Fire"))
+            {
+                particles.enableEmission = true;
+            }
         }
     }
 }
