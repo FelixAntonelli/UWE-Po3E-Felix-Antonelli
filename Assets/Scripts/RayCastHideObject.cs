@@ -71,4 +71,8 @@ public class RayCastHideObject : MonoBehaviour
     {
         stop = true;
     }
+    public void startScript()
+    {
+        stop = false;
+    }        
 }
