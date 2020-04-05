@@ -98,4 +98,13 @@ public class DamageShips : MonoBehaviour
         }
     }
 
+    public bool getShipsDead()
+    {
+        if (_ship1Health < 0 && _ship2Health < 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
 }

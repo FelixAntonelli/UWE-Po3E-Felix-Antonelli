@@ -9,18 +9,31 @@ public class Escape : MonoBehaviour
     public Transform player;
     public Transform pod;
     public RayCastHideObject RayCastHideObject;
+    public DamageShips damage;
 
     private bool lerpDone = false;
+    private bool go = false;
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        if (!lerpDone)
+        if (damage.getShipsDead())
         {
-            LerpBetweenCameras.Instance.LerpCameras(playerCam, staticCam);
-            lerpDone = true;
+            if (!lerpDone)
+            {
+                LerpBetweenCameras.Instance.LerpCameras(playerCam, staticCam);
+                lerpDone = true;
+            }
+            player.parent = pod;
+            RayCastHideObject.stopScript();
+            go = true;
         }
-        player.parent = pod;
-        RayCastHideObject.stopScript();
-        pod.position = new Vector3(pod.position.x, pod.position.y + 5 * Time.deltaTime, pod.position.z);
+    }
+    private void Update()
+    {
+        if (go)
+        {
+            pod.position = new Vector3(pod.position.x, pod.position.y + 8 * Time.deltaTime, pod.position.z);
+            staticCam.transform.LookAt(player);
+        }
     }
 }
