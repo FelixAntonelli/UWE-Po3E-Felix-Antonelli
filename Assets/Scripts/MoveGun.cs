@@ -17,11 +17,7 @@ public class MoveGun : MonoBehaviour
     private GameObject PlayerCharacter;
     private Collider PlayerCollider;
     private bool on_gun = false;
-    private bool move_to_gun = false;
-    private bool move_off_gun = false;
-    private float lerpTimer = 0;
     public RayCastHideObject RayCastHideObject;
-    private bool start_lerp = false;
     private Vector3 intialPos;
     
     private Quaternion intialRotate;
