@@ -10,6 +10,8 @@ public class DamageShips : MonoBehaviour
     public ParticleSystem Ship2Particles;
     public ParticleSystemRenderer ship1PRenderer;
     public ParticleSystemRenderer ship2PRenderer;
+    public Rigidbody ship1Body;
+    public Rigidbody ship2Body;
 
     private Collider _ship1Collider;
     private Collider _ship2Collider;
@@ -79,7 +81,9 @@ public class DamageShips : MonoBehaviour
             _ship1Health -= 10;
             if (_ship1Health < 0)
             {
-                DropShip1.SetActive(false);
+                ship1Body.isKinematic = false;
+                ship1Body.useGravity = true;
+                ship1Body.velocity = new Vector3(-10,0,0);
             }
         }
         if (other == DropShip2)
@@ -87,7 +91,9 @@ public class DamageShips : MonoBehaviour
             _ship2Health -= 10;
             if (_ship2Health < 0)
             {
-                DropShip2.SetActive(false);
+                ship2Body.isKinematic = false;
+                ship2Body.useGravity = true;
+                ship2Body.velocity = new Vector3(-10, -5, 0);
             }
         }
     }
