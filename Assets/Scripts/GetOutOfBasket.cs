@@ -9,7 +9,11 @@ public class GetOutOfBasket : MonoBehaviour
     private Collider PlayerCollider;
     private Animator animator;
     private GameObject enviro;
+
     public Transform playerTransform;
+    public Camera basketCam;
+    public Camera mainCam;
+    public RayCastHideObject rayCastScript;
 
     private void Awake()
     {
@@ -23,8 +27,10 @@ public class GetOutOfBasket : MonoBehaviour
     {
         if (other == PlayerCollider)
         {
-            if (Input.GetButton("Interact"))
+            if (Input.GetButtonDown("Interact"))
             {
+                LerpBetweenCameras.Instance.LerpCameras(basketCam, mainCam);
+                rayCastScript.startScript();
                 playerTransform.parent = null;
                 playerTransform.position = new Vector3(playerTransform.position.x, playerTransform.position.y, playerTransform.position.z - 0.5f);
             }

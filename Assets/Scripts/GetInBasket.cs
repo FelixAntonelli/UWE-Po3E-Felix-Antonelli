@@ -6,6 +6,10 @@ public class GetInBasket : MonoBehaviour
 {
     public Transform playerTransform;
     public Transform basketTransform;
+    public Camera basketCam;
+    public Camera mainCam;
+    public RayCastHideObject rayCastScript;
+
     private Animator animator;
     private GameObject enviro;
     private GameObject PlayerCharacter;
@@ -21,8 +25,10 @@ public class GetInBasket : MonoBehaviour
     {
         if (other == PlayerCollider)
         {
-            if (Input.GetButton("Interact"))
+            if (Input.GetButtonDown("Interact"))
             {
+                rayCastScript.stopScript();
+                LerpBetweenCameras.Instance.LerpCameras(mainCam, basketCam);
                 playerTransform.parent = basketTransform;
                 playerTransform.localPosition = new Vector3(0,0,0);
                 animator.SetBool("startAnim", true);

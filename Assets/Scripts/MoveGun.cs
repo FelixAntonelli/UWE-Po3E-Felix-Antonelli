@@ -56,34 +56,43 @@ public class MoveGun : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetButton("AimUp"))
+        if (on_gun)
         {
-            BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z - 0.005f, BarrelTransform.localRotation.w);
+            if (Input.GetButton("AimUp"))
+            {
+                BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z - 0.005f, BarrelTransform.localRotation.w);
 
-        } else if (Input.GetButton("AimDown"))
-        {
-            BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z + 0.005f, BarrelTransform.localRotation.w);
-        }
-        if (BarrelTransform.localRotation.z > 0.065f)
-        {
-            BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x, BarrelTransform.localRotation.y, 0.065f, BarrelTransform.localRotation.w);
-        }
-        if (BarrelTransform.localRotation.z < -0.4f)
-        {
-            BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x, BarrelTransform.localRotation.y, -0.4f, BarrelTransform.localRotation.w);
-        }
+            }
+            else if (Input.GetButton("AimDown"))
+            {
+                BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z + 0.005f, BarrelTransform.localRotation.w);
+            }
+            if (BarrelTransform.localRotation.z > 0.065f)
+            {
+                BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x, BarrelTransform.localRotation.y, 0.065f, BarrelTransform.localRotation.w);
+            }
+            if (BarrelTransform.localRotation.z < -0.3f)
+            {
+                BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x, BarrelTransform.localRotation.y, -0.3f, BarrelTransform.localRotation.w);
+            }
 
-        if (Input.GetButton("AimLeft"))
-        {
-            BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x - 0.005f, BarrelTransform.localRotation.y,BarrelTransform.localRotation.z, BarrelTransform.localRotation.w);
-            GunTransform.localRotation = new Quaternion(GunTransform.localRotation.x, GunTransform.localRotation.y - 0.005f, GunTransform.localRotation.z, GunTransform.localRotation.w);
+            if (Input.GetButton("AimLeft"))
+            {
+                BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x - 0.005f, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z, BarrelTransform.localRotation.w);
+            }
+            else if (Input.GetButton("AimRight"))
+            {
+                BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x + 0.005f, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z, BarrelTransform.localRotation.w);
+            }
+            if (BarrelTransform.localRotation.x > 0.22)
+            {
+                BarrelTransform.localRotation = new Quaternion(0.22f, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z, BarrelTransform.localRotation.w);
+            }
+            if (BarrelTransform.localRotation.x < -0.06)
+            {
+                BarrelTransform.localRotation = new Quaternion(-0.06f, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z, BarrelTransform.localRotation.w);
+            }
         }
-        else if (Input.GetButton("AimRight"))
-        {
-            BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x + 0.005f, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z, BarrelTransform.localRotation.w);
-            GunTransform.localRotation = new Quaternion(GunTransform.localRotation.x , GunTransform.localRotation.y + 0.005f, GunTransform.localRotation.z, GunTransform.localRotation.w);
-        }
-        ///maybe limit left/right rotate
     }
 
     // Update is called once per frame
