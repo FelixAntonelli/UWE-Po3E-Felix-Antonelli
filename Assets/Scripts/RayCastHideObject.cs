@@ -14,7 +14,7 @@ public class RayCastHideObject : MonoBehaviour
     public Camera mainCam;
     private float lerpTimer;
     public float smooth;
-    private bool stop = false;
+    private bool stop = true;
     //TODO: create ray
     // update ray
     //raycast
