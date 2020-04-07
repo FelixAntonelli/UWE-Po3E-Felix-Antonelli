@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasketStopAndStart : MonoBehaviour
+public class basket : StateMachineBehaviour
 {
     public ParticleSystemRenderer pRenderer;
 
@@ -11,8 +11,8 @@ public class BasketStopAndStart : MonoBehaviour
     private Animator animator;
     private GameObject enviro;
     private float timer = 0;
-    private bool broke = false;
-    
+    private bool end = false;
+
 
     private void Awake()
     {
@@ -23,13 +23,14 @@ public class BasketStopAndStart : MonoBehaviour
         pRenderer.enabled = false;
     }
 
-    private void Update()
+    private void OnTriggerStay(Collider other)
     {
-        if (broke)
+        if (other == PlayerCollider && !end)
         {
-            if (timer < 2)
-            {
 
+            if (timer < 3.5f)
+            {
+                animator.speed = 0;
                 if (Input.GetButton("Interact"))
                 {
                     animator.speed = 1;
@@ -48,12 +49,10 @@ public class BasketStopAndStart : MonoBehaviour
             }
         }
     }
-    void BasketBreak()
+    void basketBreak()
     {
-        if (!broke)
-        {
-            animator.speed = 0;
-            broke = true;
-        }
+        Debug.Log("Basket Break");
     }
 }
+
+
