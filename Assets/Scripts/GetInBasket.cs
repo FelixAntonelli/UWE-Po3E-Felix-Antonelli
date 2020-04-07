@@ -14,6 +14,7 @@ public class GetInBasket : MonoBehaviour
     private GameObject enviro;
     private GameObject PlayerCharacter;
     private Collider PlayerCollider;
+    private bool in_basket = false;
     private void Awake()
     {
         PlayerCharacter = GameObject.FindGameObjectWithTag("Player");
@@ -27,11 +28,25 @@ public class GetInBasket : MonoBehaviour
         {
             if (Input.GetButtonDown("Interact"))
             {
-                rayCastScript.stopScript();
-                LerpBetweenCameras.Instance.LerpCameras(mainCam, basketCam);
-                playerTransform.parent = basketTransform;
-                playerTransform.localPosition = new Vector3(0,0,0);
-                animator.SetBool("startAnim", true);
+
+                if (!in_basket)
+                {
+                    rayCastScript.stopScript();
+                    LerpBetweenCameras.Instance.LerpCameras(mainCam, basketCam);
+                    playerTransform.parent = basketTransform;
+                    playerTransform.localPosition = new Vector3(0, 0, 0);
+                    animator.SetBool("startAnim", true);
+                    in_basket = true;
+                }
+                else if (in_basket)
+                {
+                    rayCastScript.startScript();
+                    LerpBetweenCameras.Instance.LerpCameras(basketCam, mainCam);
+                    playerTransform.localPosition = new Vector3(0,0,-1);
+                    playerTransform.parent = null;
+                    animator.SetBool("startAnim", false);
+                    in_basket = false;
+                }
             }
         }
     }
