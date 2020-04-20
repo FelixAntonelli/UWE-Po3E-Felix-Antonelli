@@ -24,6 +24,7 @@ public class MoveGun : MonoBehaviour
     private float particleSpeed;
     private float particleDist;
     private float particleBrightness = 3;
+    private bool in_collider = false;
     
 
     private void Awake()
@@ -34,23 +35,18 @@ public class MoveGun : MonoBehaviour
         particleSpeed = particles.main.simulationSpeed;
         particleDist = particles.velocityOverLifetime.x.constant;
     }
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other == PlayerCollider)
         {
-            if (Input.GetKeyDown(KeyCode.G) && !on_gun)
-            {
-                Debug.Log("Mountgun was pressed");
-                LerpBetweenCameras.Instance.LerpCameras(playerCam, gunCam);
-                on_gun = true;
-                RayCastHideObject.stopScript();
-            }
-            else if (Input.GetKeyDown(KeyCode.G) && on_gun)
-            {
-                LerpBetweenCameras.Instance.LerpCameras(gunCam, playerCam);
-                on_gun = false;
-                RayCastHideObject.startScript();
-            }
+            in_collider = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == PlayerCollider)
+        {
+            in_collider = false;
         }
     }
 
@@ -98,9 +94,26 @@ public class MoveGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (in_collider)
+        {
+            if (Input.GetKeyDown(KeyCode.G) && !on_gun)
+            {
+                Debug.Log("Mountgun was pressed");
+                LerpBetweenCameras.Instance.LerpCameras(playerCam, gunCam);
+                on_gun = true;
+                RayCastHideObject.stopScript();
+            }
+            else if (Input.GetKeyDown(KeyCode.G) && on_gun)
+            {
+                LerpBetweenCameras.Instance.LerpCameras(gunCam, playerCam);
+                on_gun = false;
+                RayCastHideObject.startScript();
+            }
+        }
 
         if (on_gun)
         {
+
             gunCam.transform.LookAt(EndOfBarrelTransform);
             meshRenderer.enabled = false;
             ParticleSystem.MainModule psMain = particles.main;
