@@ -9,6 +9,7 @@ public class PutDownKey : MonoBehaviour
     public Transform leverTransform;
     public Transform slotTransform;
     public Transform playerTransform;
+    public Light light;
     private Animator animator;
     private GameObject enviro;
 
@@ -33,6 +34,7 @@ public class PutDownKey : MonoBehaviour
                     leverTransform.localRotation = new Quaternion(0,0,0,0);
                     leverTransform.localScale = new Vector3(0.2f,0.2f,0.2f);
                     animator.SetBool("readyAnim", true);
+                    light.color = Color.green;
                 }
             }
         }

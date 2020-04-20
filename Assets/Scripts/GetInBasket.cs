@@ -15,6 +15,7 @@ public class GetInBasket : MonoBehaviour
     private GameObject PlayerCharacter;
     private Collider PlayerCollider;
     private bool in_basket = false;
+    private bool in_collider = false;
     private void Awake()
     {
         PlayerCharacter = GameObject.FindGameObjectWithTag("Player");
@@ -26,9 +27,23 @@ public class GetInBasket : MonoBehaviour
     {
         if (other == PlayerCollider)
         {
+            in_collider = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == PlayerCollider)
+        {
+            animator.SetBool("startAnim", false);
+            in_collider = false;
+        }
+    }
+    private void Update()
+    {
+        if (in_collider)
+        { 
             if (Input.GetButtonDown("Interact"))
             {
-
                 if (!in_basket)
                 {
                     rayCastScript.stopScript();
@@ -42,19 +57,12 @@ public class GetInBasket : MonoBehaviour
                 {
                     rayCastScript.startScript();
                     LerpBetweenCameras.Instance.LerpCameras(basketCam, mainCam);
-                    playerTransform.localPosition = new Vector3(0,0,-1);
+                    playerTransform.localPosition = new Vector3(0, 0, -1);
                     playerTransform.parent = null;
                     animator.SetBool("startAnim", false);
                     in_basket = false;
                 }
             }
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other == PlayerCollider)
-        {
-            animator.SetBool("startAnim", false);
         }
     }
 }

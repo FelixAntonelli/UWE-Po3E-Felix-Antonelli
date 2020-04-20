@@ -42,7 +42,7 @@ public class RayCastHideObject : MonoBehaviour
     }
     private void setupRay()
     {
-        ray.origin = (player_transform.position + new Vector3(0, 0.8f, 0));
+        ray.origin = (player_transform.position + new Vector3(0, 0, 0));
         ray.direction = camera_transform.position - (player_transform.position + new Vector3(0, 0.8f, 0));
         distance = Vector3.Distance(camera_start_transform.position, player_transform.position + new Vector3(0, 0.8f, 0));
     }
@@ -55,9 +55,17 @@ public class RayCastHideObject : MonoBehaviour
             setupRay();
             if (Physics.SphereCast(ray, sphereCastSize, out RaycastHit hit, distance))
             {
-                if (!(hit.collider.tag == "IgnoreRayCast"))
+                if (!(hit.collider.tag == "IgnoreRayCast" || hit.collider.tag == "Player"))
                 {
-                    moveByLerp(camera_transform.localPosition, new Vector3(0, 0, distance - hit.distance));
+                    if (distance - hit.distance < 0.1)
+                    {
+                        Debug.Log("Distance is less than 0.1");
+                        moveByLerp(camera_transform.localPosition, new Vector3(0, 0, 0.1f));
+                    }
+                    else
+                    {
+                        moveByLerp(camera_transform.localPosition, new Vector3(0, 0, distance - hit.distance));
+                    }
                 }
             }
             else

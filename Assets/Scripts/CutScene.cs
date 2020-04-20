@@ -22,13 +22,15 @@ public class CutScene : MonoBehaviour
     public Transform EscapePos;
     public Transform EscapeLook;
 
+    bool endNow = false;
+
     public Camera cutSceneCam;
     public Camera mainCam;
     public RayCastHideObject rayCastScript;
 
 
     private float lerpTimer = 0;
-    private float smooth = 0.5f;
+    private float smooth = 0.2f;
     private Transform pos1;
     private Transform pos2;
 
@@ -41,6 +43,14 @@ public class CutScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButton("Escape"))
+        {
+            battery = false;
+            Slot = false;
+            Gun = false;
+            Escape = false;
+            endNow = true;
+        }
         if (battery)
         {
             pos1 = start;
@@ -68,6 +78,12 @@ public class CutScene : MonoBehaviour
             pos2 = EscapePos;
             cutSceneCam.transform.LookAt(EscapeLook);
             lerp();
+        }
+        if (endNow)
+        {
+            endNow = false;
+            LerpBetweenCameras.Instance.LerpCameras(cutSceneCam, mainCam);
+            rayCastScript.startScript();
         }
     }
 

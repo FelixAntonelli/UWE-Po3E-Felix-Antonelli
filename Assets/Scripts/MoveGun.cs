@@ -121,6 +121,7 @@ public class MoveGun : MonoBehaviour
                 {
                     particleBrightness = 8;
                 }
+                BarrelTransform.localRotation = new Quaternion(BarrelTransform.localRotation.x, BarrelTransform.localRotation.y, BarrelTransform.localRotation.z - 0.0005f, BarrelTransform.localRotation.w);
             }
             else
             {
